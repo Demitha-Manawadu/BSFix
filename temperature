@@ -1,1 +1,69 @@
+#include <DHT.h>  // Include DHT sensor library
+
+#define DHT_PIN 4         // Pin connected to DHT sensor (adjust as needed)
+#define DHT_TYPE DHT22    // Use DHT22 sensor (adjust if you're using another model)
+#define CONTROL_PIN 19    // ESP GPIO pin connected to the Mist Maker (MOSFET gate)
+
+// Initialize DHT sensor
+DHT dht(DHT_PIN, DHT_TYPE);
+
+bool mistMakerState = false;  // Keeps track of the Mist Maker state (OFF initially)
+
+void setup() {
+  pinMode(CONTROL_PIN, OUTPUT);  // Set Mist Maker pin as output
+  digitalWrite(CONTROL_PIN, LOW);  // Start with Mist Maker OFF
+  
+  Serial.begin(9600);  // Start serial communication at 9600 baud rate
+  dht.begin();         // Initialize DHT sensor
+  
+  Serial.println("Humidity and Temperature Monitor");
+  Serial.println("Type '1' in the Serial Monitor to toggle the Mist Maker ON/OFF.");
+}
+
+void loop() {
+  // Read temperature and humidity from the DHT sensor
+  float humidity = dht.readHumidity();
+  float temperature = dht.readTemperature();  // Temperature in Celsius
+  
+  // Check if sensor readings are valid
+  if (isnan(humidity) || isnan(temperature)) {
+    Serial.println("Failed to read from DHT sensor!");
+    return;
+  }
+
+  // Display temperature and humidity
+  Serial.print("Temperature: ");
+  Serial.print(temperature);
+  Serial.print(" °C\t");
+  Serial.print("Humidity: ");
+  Serial.print(humidity);
+  Serial.println(" %");
+
+  // If humidity is below 60%, turn on the mist maker
+  if (humidity < 60) {
+    Serial.println("Humidity below 60%. Turning on the Mist Maker.");
+    digitalWrite(CONTROL_PIN, HIGH);  // Turn ON the Mist Maker
+  } else {
+    digitalWrite(CONTROL_PIN, LOW);   // Turn OFF the Mist Maker
+  }
+
+  // Check if there's input from Serial Monitor to toggle Mist Maker manually
+  if (Serial.available() > 0) {
+    char input = Serial.read();  // Read the input from the Serial Monitor
+
+    if (input == '1') {  // Toggle Mist Maker state on receiving '1'
+      mistMakerState = !mistMakerState;  // Toggle state (ON to OFF, or OFF to ON)
+      
+      if (mistMakerState) {
+        digitalWrite(CONTROL_PIN, HIGH);  // Turn ON Mist Maker
+        Serial.println("Mist Maker ON (Manual)");
+      } else {
+        digitalWrite(CONTROL_PIN, LOW);   // Turn OFF Mist Maker
+        Serial.println("Mist Maker OFF (Manual)");
+      }
+    }
+  }
+
+  delay(2000);  // Wait 2 seconds before reading again
+}
 
