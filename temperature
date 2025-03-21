@@ -8,6 +8,8 @@
 DHT dht(DHT_PIN, DHT_TYPE);
 
 bool mistMakerState = false;  // Keeps track of the Mist Maker state (OFF initially)
+unsigned long previousMillis = 0;  // Timer variable for non-blocking delay
+const long interval = 5000;        // 5 seconds delay between humidity/temperature readings
 
 void setup() {
   pinMode(CONTROL_PIN, OUTPUT);  // Set Mist Maker pin as output
@@ -16,43 +18,46 @@ void setup() {
   Serial.begin(9600);  // Start serial communication at 9600 baud rate
   dht.begin();         // Initialize DHT sensor
   
-  Serial.println("Humidity and Temperature Monitor");
-  Serial.println("Type '1' in the Serial Monitor to toggle the Mist Maker ON/OFF.");
+  Serial.println("Humidity and Temperature Monitor Initialized.");
+  Serial.println("Type '1' in the Serial Monitor to toggle the Mist Maker ON/OFF manually.");
 }
 
 void loop() {
-  // Read temperature and humidity from the DHT sensor
-  float humidity = dht.readHumidity();
-  float temperature = dht.readTemperature();  // Temperature in Celsius
-  
-  // Check if sensor readings are valid
-  if (isnan(humidity) || isnan(temperature)) {
-    Serial.println("Failed to read from DHT sensor!");
-    return;
+  unsigned long currentMillis = millis();
+
+  // Read temperature and humidity every 5 seconds (non-blocking)
+  if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis;  // Reset the timer
+
+    float humidity = dht.readHumidity();
+    float temperature = dht.readTemperature();  // Temperature in Celsius
+
+    if (isnan(humidity) || isnan(temperature)) {
+      Serial.println("Failed to read from DHT sensor!");
+    } else {
+      // Display temperature and humidity values
+      Serial.print("Temperature: ");
+      Serial.print(temperature);
+      Serial.print(" °C\t");
+      Serial.print("Humidity: ");
+      Serial.print(humidity);
+      Serial.println(" %");
+
+      // Check humidity and turn on Mist Maker automatically if below 70%
+      if (humidity < 70) {
+        Serial.println("Humidity is low! Turning on the Mist Maker.");
+        digitalWrite(CONTROL_PIN, HIGH);  // Turn ON Mist Maker
+        mistMakerState = true;  // Update the state variable
+      }
+    }
   }
 
-  // Display temperature and humidity
-  Serial.print("Temperature: ");
-  Serial.print(temperature);
-  Serial.print(" °C\t");
-  Serial.print("Humidity: ");
-  Serial.print(humidity);
-  Serial.println(" %");
-
-  // If humidity is below 60%, turn on the mist maker
-  if (humidity < 60) {
-    Serial.println("Humidity below 60%. Turning on the Mist Maker.");
-    digitalWrite(CONTROL_PIN, HIGH);  // Turn ON the Mist Maker
-  } else {
-    digitalWrite(CONTROL_PIN, LOW);   // Turn OFF the Mist Maker
-  }
-
-  // Check if there's input from Serial Monitor to toggle Mist Maker manually
+  // Check if Serial Monitor input is available to toggle Mist Maker manually
   if (Serial.available() > 0) {
-    char input = Serial.read();  // Read the input from the Serial Monitor
+    char input = Serial.read();  // Read input from Serial Monitor
 
-    if (input == '1') {  // Toggle Mist Maker state on receiving '1'
-      mistMakerState = !mistMakerState;  // Toggle state (ON to OFF, or OFF to ON)
+    if (input == '1') {
+      mistMakerState = !mistMakerState;  // Toggle the Mist Maker state
       
       if (mistMakerState) {
         digitalWrite(CONTROL_PIN, HIGH);  // Turn ON Mist Maker
@@ -63,7 +68,4 @@ void loop() {
       }
     }
   }
-
-  delay(2000);  // Wait 2 seconds before reading again
 }
-
