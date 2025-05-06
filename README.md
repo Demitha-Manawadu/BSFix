@@ -16,7 +16,7 @@ We’ve developed a custom **PCB-based control system** that monitors and regula
 - Adjustable LED lighting to simulate day/night cycles.
 - Feedback control system for consistent and optimal breeding conditions.
 
-![Breeding Unit Image](Breeding_unit_image.jpg)
+![Breeding Unit Image](breeding_unit.jpg)
 
 ---
 
@@ -34,7 +34,7 @@ This unit receives **organic waste + BSF eggs** from the breeding unit and proce
   - Larval development tracking
   - Compost health analysis
 
-![Composting Unit Image](Composting_unit_image.jpg)
+![Composting Unit Image](composting_unit.jpg)
 
 ---
 
