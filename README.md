@@ -2,7 +2,7 @@
 
 An integrated, intelligent system designed to automate and optimize **Black Soldier Fly (BSF)** farming — transforming organic waste into high-value byproducts using smart hardware, real-time monitoring, and AI.
 
-![Main Project Image]()
+![Main Project Image](main_image.jpg)
 
 ---
 
@@ -16,7 +16,7 @@ We’ve developed a custom **PCB-based control system** that monitors and regula
 - Adjustable LED lighting to simulate day/night cycles.
 - Feedback control system for consistent and optimal breeding conditions.
 
-![Breeding Unit Image](path/to/breeding_unit_image.jpg)
+![Breeding Unit Image](breeding_unit_image.jpg)
 
 ---
 
@@ -34,7 +34,7 @@ This unit receives **organic waste + BSF eggs** from the breeding unit and proce
   - Larval development tracking
   - Compost health analysis
 
-![Composting Unit Image](path/to/composting_unit_image.jpg)
+![Composting Unit Image](composting_unit_image.jpg)
 
 ---
 
@@ -48,7 +48,7 @@ Our digital platform bridges the gap between **farmers, composting sites, and bu
 - Digital marketplace for larvae, compost, and services
 - Performance alerts and smart recommendations
 
-![App/Platform Image](path/to/app_image.jpg)
+![App/Platform Image](app_platform.jpg)
 
 ---
 
@@ -62,10 +62,4 @@ Our digital platform bridges the gap between **farmers, composting sites, and bu
 - Scalable from homes to industrial farms
 
 ---
-
-## 📬 Contact
-
-For inquiries or collaboration:  
-**Demitha Manawadu**  
-📧 [demithamanawadu@gmail.com](mailto:demithamanawadu@gmail.com)
 
