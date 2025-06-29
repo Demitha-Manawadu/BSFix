@@ -1,7 +1,7 @@
 # 🪰 BSFix – Automated, IoT-Based Smart Black Soldier Fly Farming System
 
 An integrated, intelligent system designed to automate and optimize **Black Soldier Fly (BSF)** farming — transforming organic waste into high-value byproducts using smart hardware, real-time monitoring, and AI.
-
+BSFix- https://youtu.be/aNhRXkH7EMk?si=eq0NjX4v1IFVz3cC
 ![Main Project Image](main_image.jpg)
 
 ---
